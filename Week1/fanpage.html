@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Justin Bieber Fan Portal</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<style>
+/* GENERAL */
+*{margin:0;padding:0;box-sizing:border-box;font-family: 'Poppins', sans-serif;scroll-behavior:smooth;transition:0.3s;}
+body{background:linear-gradient(to right,#fceabb,#f8b500);color:#333;transition:0.3s;}
+body.dark{background:#121212;color:#f5f5f5;}
+h2{margin-bottom:20px;color:#ff0055;text-align:center;font-size:2rem;}
+section{padding:60px 20px;max-width:1000px;margin:auto;opacity:0;transform:translateY(50px);transition:0.8s;}
+section.show{opacity:1;transform:translateY(0);}
+
+/* NAVBAR */
+nav{background:rgba(0,0,0,0.8); color:white; display:flex; justify-content:space-between; padding:10px 20px; position:sticky; top:0; z-index:1000; border-radius:0 0 15px 15px;}
+nav.scrolled{box-shadow:0 5px 15px rgba(0,0,0,0.5);}
+nav h1{font-size:1.5rem; cursor:pointer;}
+nav ul{display:flex; list-style:none; flex-wrap:wrap;}
+nav ul li{margin:0 10px;}
+nav ul li a{color:white; font-weight:bold; padding:5px 10px; transition:0.3s; border-radius:5px;}
+nav ul li a:hover{background:#ff0055; transform:scale(1.05);}
+#darkModeToggle{padding:5px 10px;border-radius:5px;background:#ff0055;border:none;color:white;cursor:pointer;transition:0.3s;}
+#darkModeToggle:hover{background:#ff3399;}
+
+/* VIDEO */
+#video iframe{width:100%; height:500px; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.2);}
+
+/* FORUM */
+#forum{background:white; padding:25px; border-radius:20px; box-shadow:0 5px 25px rgba(0,0,0,0.1);}
+body.dark #forum{background:#222;}
+#forum input,#forum textarea{width:100%;padding:10px;margin-bottom:10px;border-radius:10px;border:1px solid #ccc;transition:0.3s;}
+#forum input:focus,#forum textarea:focus{border-color:#ff0055; outline:none;}
+#forum button{padding:12px 25px;background:#ff0055;color:white;border:none;border-radius:10px;cursor:pointer;transition:0.3s;}
+#forum button:hover{background:#ff3399;}
+.post{border-bottom:1px solid #eee;padding:10px 0;transition:0.3s;position:relative;}
+body.dark .post{border-color:#555;}
+.post:hover{background:#fef0f8;}
+body.dark .post:hover{background:#333;}
+.post .like-btn, .post .reply-btn{margin-right:10px; cursor:pointer; color:#ff0055;}
+.post .replies{margin-left:20px; margin-top:10px;}
+
+/* QUIZ */
+#quiz{background:rgba(255,255,255,0.9); padding:25px; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.2);}
+body.dark #quiz{background:#222;}
+#quiz p,#quiz h3{text-align:center;}
+#quiz button{display:block;margin:10px auto;padding:12px 25px;background:#111;color:white;border:none;border-radius:10px;cursor:pointer;transition:0.3s;}
+#quiz button:hover{background:#ff0055;transform:scale(1.05);}
+
+/* LIGHTBOX CAROUSEL GALLERY */
+#gallery-section{position:relative;}
+#gallery{max-width:700px;margin:auto;overflow:hidden;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,0.2);}
+#gallery img{width:100%; display:none; border-radius:15px;}
+#gallery img.active{display:block;}
+
+/* WORLD TOUR MAP */
+#tour-map{width:100%;height:500px;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,0.2);}
+
+/* CARDS */
+.cards{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;}
+.card{background:white;padding:25px;border-radius:15px;flex:1 1 250px;text-align:center;transition: transform 0.3s, box-shadow 0.3s;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+body.dark .card{background:#222;}
+.card:hover{transform:translateY(-10px); box-shadow:0 10px 25px rgba(0,0,0,0.2);}
+
+/* FOOTER */
+footer{text-align:center;padding:25px;background:#111;color:white;margin-top:50px;border-radius:15px 15px 0 0;}
+
+/* RESPONSIVE */
+@media(max-width:768px){nav ul{flex-direction:column;background:rgba(0,0,0,0.9);position:absolute;top:60px;right:0;width:200px;display:none;} nav ul.active{display:flex;} nav ul li{margin:10px 0;} .cards{flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+<h1 onclick="toggleMenu()">Justin Bieber Fan Portal</h1>
+<ul id="nav-links">
+<li><a href="#about">About him</a></li>
+<li><a href="#video">Video</a></li>
+<li><a href="#forum">Forum</a></li>
+<li><a href="#quiz">Quiz</a></li>
+<li><a href="#gallery-section">Gallery</a></li>
+<li><a href="#tour">World Tour</a></li>
+<li><a href="#awards">Awards</a></li>
+</ul>
+<!-- Symbol button -->
+<button id="darkModeToggle" onclick="toggleDarkMode()" style="font-size:24px; background:none; border:none; cursor:pointer;">
+  🌙
+</button>
+
+</nav>
+
+<!-- DETAILED BIO -->
+<section id="about">
+<h2>About Justin Bieber</h2>
+  <div class="cards">
+    <div class="card"><strong>Full Name:</strong> Justin Drew Bieber</div>
+    <div class="card"><strong>Birthday:</strong> March 1, 1994 (age 31)</div>
+    <div class="card"><strong>Birthplace:</strong> London, Ontario, Canada</div>
+    <div class="card"><strong>Education:</strong> St. Michael Catholic Secondary School</div>
+    <div class="card"><strong>Occupation:</strong> Singer, songwriter</div>
+    <div class="card"><strong>Years Active:</strong> 2007–present</div>
+    <div class="card"><strong>Spouse:</strong> Hailey Baldwin (m. 2018)</div>
+    <div class="card"><strong>Children:</strong> 1</div>
+    <div class="card"><strong>Mother:</strong> Pattie Mallette</div>
+    <div class="card"><strong>Family (by marriage):</strong> Baldwin</div>
+    <div class="card"><strong>Genres:</strong> Pop, R&B, Dance-pop, EDM</div>
+    <div class="card"><strong>Instruments:</strong> Vocals</div>
+    <div class="card"><strong>Labels:</strong> Island, EMI, Universal</div>
+    <div class="card"><strong>Official Website:</strong> <a href="https://justinbiebermusic.com" target="_blank">justinbiebermusic.com</a></div>
+  </div>
+</section>
+
+
+<!-- VIDEO -->
+<section id="video">
+<h2>Justin Bieber - Baby</h2>
+<iframe src="https://www.youtube.com/embed/kffacxfA7G4" allowfullscreen></iframe>
+</section>
+
+<!-- FORUM -->
+<section id="forum">
+<h2>Fan Discussion Forum</h2>
+<input type="text" id="username" placeholder="Your Name">
+<textarea id="message" rows="3" placeholder="Your message"></textarea>
+<button onclick="postMessage()">Post</button>
+<div id="posts"></div>
+</section>
+
+<br><br>
+
+<!-- QUIZ -->
+<section id="quiz">
+<h2>Justin Bieber Quiz</h2>
+<p id="quiz-question"></p>
+<div id="quiz-options"></div>
+<p id="quiz-result"></p>
+<p id="quiz-score"></p>
+<h3>Top Scores</h3>
+<ul id="top-scores"></ul>
+<button id="next-btn" onclick="nextQuestion()" style="display:none;">Next</button>
+</section>
+
+<!-- GALLERY CAROUSEL -->
+<section id="gallery-section">
+<h2>Gallery</h2>
+<div id="gallery">
+<img src="images/justin1.jpg" class="active" alt="">
+<img src="images/justin2.jpg" alt="">
+<img src="images/justin3.jpg" alt="">
+<img src="images/justin4.jpg" alt="">
+<img src="images/justin5.jpg" alt="">
+<img src="images/justin6.jpg" alt="">
+</div>
+
+</section>
+
+<!-- WORLD TOUR -->
+<section id="tour">
+<h2>World Tour</h2>
+<div id="tour-map"></div>
+</section>
+
+
+
+<!-- AWARDS -->
+<section id="awards">
+<h2>Awards</h2>
+<ul>
+<li>Grammy Award (2016)</li>
+<li>American Music Awards (10+)</li>
+<li>Billboard Music Awards (20+)</li>
+</ul>
+</section>
+
+<footer>© 2025 Justin Bieber Fan Portal</footer>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+// NAV MENU TOGGLE
+function toggleMenu(){document.getElementById('nav-links').classList.toggle('active');}
+
+// DARK MODE
+//function toggleDarkMode(){document.body.classList.toggle('dark');}
+function toggleDarkMode() {
+  document.body.classList.toggle('dark');
+  
+  // Change icon based on mode
+  const btn = document.getElementById('darkModeToggle');
+  if(document.body.classList.contains('dark')){
+    btn.textContent = '☀️'; // Sun icon for light mode
+  } else {
+    btn.textContent = '🌙'; // Moon icon for dark mode
+  }
+}
+
+
+// SCROLL ANIMATION
+window.addEventListener('scroll',()=>{document.querySelectorAll('section').forEach(sec=>{if(window.scrollY + window.innerHeight -100 > sec.offsetTop){sec.classList.add('show');}});});
+
+// QUIZ
+const quizQuestions=[
+{q:'Where was Justin Bieber born?', options:['Canada','USA','UK','Australia'], answer:'Canada'},
+{q:'What is Justin Bieber\'s wife\'s name?', options:['Hailey','Selena','Camila','Dua'], answer:'Hailey'},
+{q:'Which song made him famous?', options:['Baby','Sorry','Peaches','Yummy'], answer:'Baby'},
+{q:'When was Justin Bieber born?', options:['1992','1994','1996','1998'], answer:'1994'},
+{q:'Which award did he win in 2016?', options:['Grammy','Oscar','Emmy','Golden Globe'], answer:'Grammy'}
+];
+let currentQ=0, score=0;
+function loadQuestion(){
+const q=document.getElementById('quiz-question');
+const opts=document.getElementById('quiz-options');
+const res=document.getElementById('quiz-result');
+res.textContent='';document.getElementById('next-btn').style.display='none';
+q.textContent=quizQuestions[currentQ].q; opts.innerHTML='';
+quizQuestions[currentQ].options.forEach(opt=>{
+const btn=document.createElement('button'); btn.textContent=opt;
+btn.onclick=()=>checkAnswer(opt);
+opts.appendChild(btn);
+});}
+function checkAnswer(ans){
+const res=document.getElementById('quiz-result');
+if(ans===quizQuestions[currentQ].answer){score++; res.textContent='Correct!';}
+else{res.textContent=`Wrong! Correct answer: ${quizQuestions[currentQ].answer}`;}
+document.getElementById('next-btn').style.display='block';
+if(currentQ===quizQuestions.length-1){confetti();}
+updateTopScores();}
+function nextQuestion(){currentQ++; if(currentQ>=quizQuestions.length){document.getElementById('quiz-question').textContent='Quiz Completed!';document.getElementById('quiz-options').innerHTML='';document.getElementById('quiz-score').textContent=`Your Score: ${score}/${quizQuestions.length}`;}else{loadQuestion();}}
+function updateTopScores(){let scores=JSON.parse(localStorage.getItem('topScores'))||[]; if(currentQ===quizQuestions.length-1){scores.push(score); scores.sort((a,b)=>b-a); scores=scores.slice(0,5); localStorage.setItem('topScores',JSON.stringify(scores));} const ul=document.getElementById('top-scores'); ul.innerHTML=''; scores.forEach(s=>{const li=document.createElement('li'); li.textContent=s; ul.appendChild(li);});}
+loadQuestion(); updateTopScores();
+
+// FORUM
+function postMessage(){
+let username=document.getElementById('username').value.trim();
+let message=document.getElementById('message').value.trim();
+if(!username||!message){alert('Please fill both fields'); return;}
+const postsDiv=document.getElementById('posts');
+const postDiv=document.createElement('div'); postDiv.classList.add('post');
+postDiv.innerHTML=`<strong>${username}</strong>: ${message} <span class="like-btn" onclick="likePost(this)">❤️0</span> <span class="reply-btn" onclick="replyPost(this)">💬Reply</span><div class="replies"></div>`;
+postsDiv.prepend(postDiv);
+document.getElementById('username').value='';document.getElementById('message').value='';
+}
+function likePost(el){
+let count=parseInt(el.textContent.replace(/[^\d]/g,''))+1;
+el.textContent=`❤️${count}`;
+}
+function replyPost(el){
+let reply=prompt('Enter your reply:'); if(reply){const repliesDiv=el.parentElement.querySelector('.replies'); const replyDiv=document.createElement('div'); replyDiv.textContent=reply; repliesDiv.appendChild(replyDiv);}}
+  
+// GALLERY CAROUSEL
+// let currentSlide=0;
+// const slides=document.querySelectorAll('#gallery img');
+// function showSlide(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');}
+// function nextSlide(){currentSlide=(currentSlide+1)%slides.length; showSlide(currentSlide);}
+// function prevSlide(){currentSlide=(currentSlide-1+slides.length)%slides.length; showSlide(currentSlide);}
+// GALLERY CAROUSEL AUTO-SLIDE
+let currentSlide = 0;
+const slides = document.querySelectorAll('#gallery img');
+
+function showSlide(i){
+  slides.forEach(s => s.classList.remove('active'));
+  slides[i].classList.add('active');
+}
+
+// Next / Prev buttons
+function nextSlide(){ currentSlide = (currentSlide + 1) % slides.length; showSlide(currentSlide); }
+function prevSlide(){ currentSlide = (currentSlide - 1 + slides.length) % slides.length; showSlide(currentSlide); }
+
+// Auto-slide every 5 seconds
+setInterval(nextSlide, 5000);
+
+// Initial display
+showSlide(currentSlide);
+
+
+// WORLD TOUR MAP
+const map=L.map('tour-map').setView([20,0],2);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution:'© OpenStreetMap contributors'}).addTo(map);
+const tourDates=[{city:'Los Angeles', coords:[34.0522,-118.2437], date:'Dec 1, 2025'},
+{city:'London', coords:[51.5074,-0.1278], date:'Dec 15, 2025'},
+{city:'Tokyo', coords:[35.6895,139.6917], date:'Jan 10, 2026'}];
+tourDates.forEach(t=>{L.marker(t.coords).addTo(map).bindPopup(`${t.city} - ${t.date}`);});
+</script>
+</body>
+</html>

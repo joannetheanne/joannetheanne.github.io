@@ -1,0 +1,78 @@
+body {
+    margin: 0;
+    font-family:'Courier New', Courier, monospace;
+    background: #f0f4f8;
+    color: #302e2e;
+}
+
+header {
+    background: plum;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;  
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.profile-pic {
+    width: 200px;
+    height: 200px;         
+    border-radius: 50%; 
+    border: 1px solid #bd74df;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    object-fit: cover; 
+}
+
+.bio-box {
+  background: rgb(234, 228, 228);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  max-width: 400px;
+  border-left: 6px solid #ffaefa;
+}
+
+ul {
+  list-style-type:square; 
+  padding-left: 1.2rem;
+}
+
+ul li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.video-section {
+  text-align: center;
+  padding: 2rem;
+}
+
+.video-container {
+  margin-top: 1rem;
+  display: inline-block;
+  border: 6px solid #ffaefa;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.site-footer {
+    text-align: center;
+    padding: 16px 0;
+}
+
+.footer-box {
+    width: 580px;                     /* slightly wider than video (560px) */
+    max-width: 90%;                   /* responsive for smaller screens */
+    margin: 0 auto;                   /* center horizontally */
+    border-top: 1px solid rgb(169, 160, 160);
+    padding-top: 8px;
+}
+

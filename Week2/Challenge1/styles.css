@@ -1,0 +1,95 @@
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: aquamarine;
+    margin: 0;
+    color:#222222;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 24px;
+}
+
+.site-header h1{
+    font-size: 3em;
+    font-weight: 800;
+    text-align: center;
+    margin: 0 0 8px 0;
+    color: hotpink;
+}
+
+.site-header .tagline{
+    font-style: italic;
+    text-align: center;
+    padding: 0 0 24px 0;
+    color: gray;
+}
+
+#mascot-image {
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+}
+
+.mascot-placeholder {
+    border: 2px black solid;
+    border-radius: 12px;
+    width: 260px;
+    margin: auto;
+    background-color: white;
+}
+
+p {
+    line-height: 1.6;
+    font-size: 1rem;
+    margin: 0 0 16px 0;
+}
+
+.actions {
+    text-align: center;
+    margin: 0 0 16px 0;
+}
+
+.buy-tickets {
+    border-style: hidden;
+    background-color: rgb(55, 196, 55);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    box-shadow: 0 2px 12px rgb(17, 118, 176);
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+.buy-tickets:hover {
+    background-color: #139929;
+    cursor: pointer;
+    transform: translateY(-1px);
+}
+
+.make-donation {
+    border-style: hidden;
+    background-color: blue;
+    color: white;
+    padding: 12px 20px;
+    margin-right: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    box-shadow: 0 2px 12px rgb(245, 3, 216);
+}
+
+.make-donation:hover {
+    background-color: #3519d5;
+    cursor: pointer;
+    transform: translateY(-1px);
+}
+
+.site-footer{
+    border-top: 1px solid rgb(169, 160, 160);
+    color: gray;
+    text-align: center;
+    font-size: 0.8em;
+    padding-top: 16px;
+    margin-top: 24px;
+}

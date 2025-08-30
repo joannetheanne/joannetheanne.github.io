@@ -1,0 +1,95 @@
+/* styles.css - Challenge #2 (Skeleton: Rides Gallery) */
+
+
+/* 0) Base page */
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: rgb(249, 250, 250);
+    margin: 0;
+    color:#000000;
+}
+
+/* 1) Container */
+.container {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 24px;
+}
+
+/* 2) Section heading */
+.attractions h2 {
+    text-align: center;
+    margin: 15px 0;
+}
+
+/* 3) Cards wrapper (center all cards horizontally) */
+.cards {
+    text-align: center;
+}
+
+/* 4) Card (size, spacing, border, rounded corners) */
+.card {
+    text-align: left;
+    display: inline-block;
+    width: 240px;
+    border: 2px grey solid;
+    border-radius: 10px;
+    margin: 8px;
+    box-shadow: 0 2px 12px rgb(148, 161, 168);
+    vertical-align: top;
+}
+
+/* 5) Card text (h3 title, paragraph blurb) */
+.card h3{
+    margin: 10px 12px;
+    font-weight: bolder;
+    font-size: 0.95em;
+}
+
+.card .blurb{
+    margin: 3px 12px 20px 12px;
+    color: rgb(101, 100, 100);
+    line-height: 1.5;
+    font-size: 0.9em;
+}
+
+/* 6) Card image (fit within card, centered) */
+.card img {
+    display: block;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+/* 7) Hover state: change border to green, then make it wigglew */
+.card:hover {
+  animation: wiggle 0.3s;
+  animation-iteration-count: 1;
+  border-color: red;
+}
+
+@keyframes wiggle {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+/* 8) Footer */
+.site-footer{
+    border-top: 1px solid rgb(169, 160, 160);
+    color: gray;
+    text-align: center;
+    font-size: 0.9em;
+    padding-top: 16px;
+    margin-top: 24px;
+}
