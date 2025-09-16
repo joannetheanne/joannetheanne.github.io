@@ -1,0 +1,198 @@
+
+let flippedCards = [];
+let score = 0;
+let matchedPairs = 0;
+let cards = [];
+
+function generate_board() {
+
+    //============================================================================
+    // Task 1
+    // Retrieve the friend name(s) from the 'friends' multi-select dropdown menu
+    //============================================================================
+
+    // Array to contain the names of user-selected friend(s)
+    // For example, if the user selected 'Darryl' and 'Yin Kit',
+    //   this array's value will be:
+    //      [ 'darryl', 'yinkit' ]
+    //
+    let friends = []; // Initialize to empty
+    selected = document.getElementById("friends");
+    for (let friend of selected.options){
+        if (friend.selected){
+            friends.push(friend.value);
+        }
+    }
+
+    // YOUR CODE GOES HERE
+
+    // Display user's selection in Developer Tools --> Console.
+    console.log(friends);
+
+
+
+    //============================================================================
+    // Task 2
+    // Given one or more selected friends and given 4 fruit names,
+    //   generate a 'randomized' Array of finalized card names.
+    // 
+    // Card names are as follows:
+    //    apple_brandon.png
+    //    banana_brandon.png
+    //    kiwi_brandon.png
+    //    orange_brandon.png
+    //
+    // where 'brandon' can be replaced with another friend's name,
+    // e.g.
+    //    apple_nick.png
+    // (and so on)
+    //
+    // Display all 4 fruit cards of one or more selected friends.
+    //
+    // NOTE: Each card must be displayed TWO and ONLY TWO times (thus, a "pair")
+    //       (such that the user can attempt to 'match').
+    //
+    // Check out this utility function (declared at the bottom of this file)
+    //   for randomizing the order of Array elements.
+    //        shuffleArray()
+    //============================================================================
+    const fruits = [ 'apple', 'banana', 'kiwi', 'orange' ];
+
+    // YOUR CODE GOES HERE
+    card = [];
+    var board = document.getElementById("game-board");
+    for (let friend of friends){
+        console.log(friend);
+        for (fruit of fruits){
+            let cardName = fruit + "_" + friend + ".png";
+            cards.push(cardName);
+            cards.push(cardName);
+        }
+    }
+
+    shuffleArray(cards);
+
+    for (let card of cards){
+        let img = document.createElement("img");
+        img.setAttribute("src", "cards/" + card);
+        board.appendChild(img);
+    }
+
+
+
+    //============================================================================
+    // Task 3
+    // Display the cards in <div id="game-board">
+    //
+    // For this, we will make use of Template Literal (using backticks).
+    //
+    // NOTE: The game board will always have 4 columns and N rows, where N denotes
+    //       (number of selected friends) x 2.
+    //
+    //       For example, if I chose 'Brandon', 'Darryl', and 'Nick' (3 friends),
+    //         then the newly generated game board will be
+    //         6 (rows) by 4 (columns).
+    //============================================================================
+    const num_cols = fruits.length;
+    const num_rows = friends.length * 2;
+
+    console.log("# of columns: " + num_cols)
+    console.log("# of rows: " + num_rows);
+
+
+    // YOUR CODE GOES HERE
+    let result_str = "<table style='margin:auto; text-align:center;'>";
+    let cardIndex = 0;
+
+    for (let row=0; row<num_rows; row++){
+        result_str += "<tr>";
+        for (let col=0; col<num_cols; col++){
+            let card = cards[cardIndex++];
+            result_str += `
+            <td> 
+                <img src="cards/hidden.png" data-card="${card}" class="card"></img>
+            </td>
+            `;
+        }
+        result_str += "</tr>";
+    }
+
+    result_str += "</table>";
+
+    // You will need to rewrite the value of this result_str (String).
+    // let result_str = `
+    //     <div style='color: red'>
+    //         <p>This is a sample HTML code that will replace the parent div's innerHTML!</p>
+    //         <p>Instead of paragraph texts, you will display cards here.</p>
+    //     </div>
+    // `;
+
+
+
+    // DO NOT MODIFY THE FOLLOWING
+    // Replace the innerHTML of <div id="game-board">
+    //   with a newly prepared HTML string (result_str).
+    document.getElementById('game-board').innerHTML = result_str;
+
+    score = 0;
+    matchedPairs = 0;
+    document.getElementById("score").innerText = "Score: 0";
+
+    // Attach event listeners AFTER cards are in DOM
+    let cardsOnBoard = document.getElementsByClassName("card");
+    for (let i = 0; i < cardsOnBoard.length; i++) {
+        cardsOnBoard[i].addEventListener("click", function () {
+            flipCard(this);
+        });
+    }
+
+}
+
+
+// Utility Function
+// DO NOT MODIFY
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
+}
+
+function flipCard(card) {
+    if (flippedCards.length === 2 || card.classList.contains("matched")) return;
+
+    card.src = "cards/" + card.dataset.card;
+    flippedCards.push(card);
+
+    if (flippedCards.length === 2) {
+        setTimeout(checkMatch, 1000);
+    }
+}
+
+function checkMatch() {
+    let card1 = flippedCards[0];
+    let card2 = flippedCards[1];
+
+    if (card1.dataset.card === card2.dataset.card) {
+        score++;
+        matchedPairs++;
+
+        document.getElementById("score").innerText = "Score: " + score;
+
+        card1.classList.add("matched");
+        card2.classList.add("matched");
+        card1.style.opacity = "0.5";
+        card2.style.opacity = "0.5";
+    } else {
+        card1.src = "cards/hidden.png";
+        card2.src = "cards/hidden.png";
+    }
+
+    flippedCards = [];
+
+    if (matchedPairs === cards.length / 2) {
+        document.getElementById("score").innerText = "All Matched, Congratulations!";
+    }
+}
+
